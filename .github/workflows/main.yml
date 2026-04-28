@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4.1.7
 
       - uses: krdlab/setup-haxe@master
         with:
@@ -54,7 +54,7 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - uses: actions/checkout@v2.3.0
+      - uses: actions/checkout@v4.1.7
 
       - uses: krdlab/setup-haxe@master
         with:
