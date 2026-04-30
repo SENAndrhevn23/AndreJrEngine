@@ -131,6 +131,13 @@ class ChartingState extends MusicBeatState
 	var nextRenderedSustains:FlxTypedGroup<FlxSprite>;
 	var nextRenderedNotes:FlxTypedGroup<Note>;
 
+	// Spamming features
+	var check_stackActive:FlxUICheckBox;
+    var stepperStackNum:FlxUINumericStepper;
+    var stepperStackOffset:FlxUINumericStepper;
+    var stepperStackSideOffset:FlxUINumericStepper;
+    var stepperShrinkAmount:FlxUINumericStepper;
+
 	var gridBG:FlxSprite;
 	var nextGridBG:FlxSprite;
 
@@ -406,6 +413,7 @@ class ChartingState extends MusicBeatState
 	var noteSkinInputText:FlxUIInputText;
 	var noteSplashesInputText:FlxUIInputText;
 	var stageDropDown:FlxUIDropDownMenuCustom;
+	var check_stackActive:FlxUICheckBox;
 	#if FLX_PITCH
 	var sliderRate:FlxUISlider;
 	#end
