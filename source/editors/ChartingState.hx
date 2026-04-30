@@ -1370,7 +1370,7 @@ function addNoteStackingUI():Void
     check_stackActive.name = 'check_stackActive';
 
     // Stack amount
-    stepperStackNum = new FlxUINumericStepper(10, 30, 1, 1, 0); // X, Y, Step, Default, Min
+    stepperStackNum = new FlxUINumericStepper(10, 30, 1, 1, 0);
     stepperStackNum.max = 999999;
     stepperStackNum.name = 'stack_count';
     blockPressWhileTypingOnStepper.push(stepperStackNum);
