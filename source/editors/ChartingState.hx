@@ -413,7 +413,6 @@ class ChartingState extends MusicBeatState
 	var noteSkinInputText:FlxUIInputText;
 	var noteSplashesInputText:FlxUIInputText;
 	var stageDropDown:FlxUIDropDownMenuCustom;
-	var check_stackActive:FlxUICheckBox;
 	#if FLX_PITCH
 	var sliderRate:FlxUISlider;
 	#end
@@ -1358,7 +1357,7 @@ class ChartingState extends MusicBeatState
 		UI_box.addGroup(tab_group_chart);
 	}
 
-function addStackingTab():Void
+function addNoteStackingUI():Void
 {
     var tab_group_stacking = new FlxUI(null, UI_box);
     tab_group_stacking.name = 'Note Spamming';
@@ -1366,7 +1365,7 @@ function addStackingTab():Void
     check_stackActive = new FlxUICheckBox(10, 10, null, null, "Enable EZ Spam Mode", 100);
     check_stackActive.name = 'check_stackActive';
 
-    stepperStackNum = new FlxUINumericStepper(10, 30, 1, 1, 0, 999999, 4);
+    stepperStackNum = new FlxUINumericStepper(10, 30, 1, 1, 0, 999999);
     stepperStackNum.name = 'stack_count';
     blockPressWhileTypingOnStepper.push(stepperStackNum);
 
@@ -1382,7 +1381,7 @@ function addStackingTab():Void
     halfSpamNum.color = FlxColor.RED;
     halfSpamNum.label.color = FlxColor.WHITE;
 
-    stepperStackOffset = new FlxUINumericStepper(10, 80, 1, 1, 0, 999999, 4);
+    stepperStackOffset = new FlxUINumericStepper(10, 80, 1, 1, 0, 999999);
     stepperStackOffset.name = 'stack_offset';
     blockPressWhileTypingOnStepper.push(stepperStackOffset);
 
@@ -1402,7 +1401,7 @@ function addStackingTab():Void
     stepperStackSideOffset.name = 'stack_sideways';
     blockPressWhileTypingOnStepper.push(stepperStackSideOffset);
 
-    stepperShrinkAmount = new FlxUINumericStepper(10, stepperStackSideOffset.y + 30, 1, 1, 0, 8192, 4);
+    stepperShrinkAmount = new FlxUINumericStepper(10, stepperStackSideOffset.y + 30, 1, 1, 0, 8192);
     stepperShrinkAmount.name = 'shrinker_amount';
     blockPressWhileTypingOnStepper.push(stepperShrinkAmount);
 
@@ -1425,7 +1424,8 @@ function addStackingTab():Void
         {
             var note:Array<Dynamic> = _song.notes[curSec].sectionNotes[i];
 
-            if (note[2] > 0) note[2] *= stepperShrinkAmount.value;
+            if (note[2] > 0)
+                note[2] *= stepperShrinkAmount.value;
 
             var originalStartTime:Float = note[0] - sectionStartTime();
             var stretchedStartTime:Float = originalStartTime * stepperShrinkAmount.value;
@@ -1438,7 +1438,7 @@ function addStackingTab():Void
         updateGrid(false);
     });
 
-    var stepperShiftSteps:FlxUINumericStepper = new FlxUINumericStepper(10, shrinkNotesButton.y + 30, 1, 1, -8192, 8192, 4);
+    var stepperShiftSteps:FlxUINumericStepper = new FlxUINumericStepper(10, shrinkNotesButton.y + 30, 1, 1, -8192, 8192);
     stepperShiftSteps.name = 'shifter_amount';
     blockPressWhileTypingOnStepper.push(stepperShiftSteps);
 
@@ -1450,7 +1450,7 @@ function addStackingTab():Void
         updateGrid(false);
     });
 
-    var stepperDuplicateAmount:FlxUINumericStepper = new FlxUINumericStepper(10, shiftNotesButton.y + 30, 1, 1, 0, 32, 4);
+    var stepperDuplicateAmount:FlxUINumericStepper = new FlxUINumericStepper(10, shiftNotesButton.y + 30, 1, 1, 0, 32);
     stepperDuplicateAmount.name = 'duplicater_amount';
     blockPressWhileTypingOnStepper.push(stepperDuplicateAmount);
 
@@ -1458,9 +1458,7 @@ function addStackingTab():Void
         var copiedNotes:Array<Dynamic> = [];
 
         for (i in 0..._song.notes[curSec].sectionNotes.length)
-        {
             copiedNotes.push(_song.notes[curSec].sectionNotes[i]);
-        }
 
         for (_i in 1...Std.int(stepperDuplicateAmount.value) + 1)
         {
@@ -1492,12 +1490,14 @@ function addStackingTab():Void
     tab_group_stacking.add(stepperShrinkAmount);
     tab_group_stacking.add(stepperShiftSteps);
     tab_group_stacking.add(stepperDuplicateAmount);
+
     tab_group_stacking.add(doubleSpamNum);
     tab_group_stacking.add(halfSpamNum);
     tab_group_stacking.add(doubleSpamMult);
     tab_group_stacking.add(halfSpamMult);
     tab_group_stacking.add(doubleShrinker);
     tab_group_stacking.add(halfShrinker);
+
     tab_group_stacking.add(shrinkNotesButton);
     tab_group_stacking.add(shiftNotesButton);
     tab_group_stacking.add(dupeNotesButton);
