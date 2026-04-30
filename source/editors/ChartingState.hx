@@ -1430,15 +1430,21 @@ function addNoteStackingUI():Void
     // Stretch notes
     var shrinkNotesButton = new FlxButton(10, doubleShrinker.y + 30, "Stretch Notes", function() {
         var minimumTime:Float = sectionStartTime();
+        var stretchAmount:Float = stepperShrinkAmount.value;
+
         for (i in 0..._song.notes[curSec].sectionNotes.length) {
             var note:Array<Dynamic> = _song.notes[curSec].sectionNotes[i];
-            if (note[2] > 0) note[2] *= stepperShrinkAmount.value;
-            var originalStartTime:Float = note[0] - sectionStartTime();
-            var stretchedStartTime:Float = originalStartTime * stepperShrinkAmount.value;
-            var newStartTime:Float = sectionStartTime() + stretchedStartTime;
-            note[0] = Math.max(newStartTime, minimumTime);
+
+            if (note[2] > 0)
+                note[2] *= stretchAmount;
+
+            var originalStartTime:Float = note[0] - minimumTime;
+            var stretchedStartTime:Float = originalStartTime * stretchAmount;
+            note[0] = Math.max(minimumTime + stretchedStartTime, minimumTime);
+
             _song.notes[curSec].sectionNotes[i] = note;
         }
+
         updateGrid(false);
     });
 
@@ -1449,9 +1455,12 @@ function addNoteStackingUI():Void
     blockPressWhileTypingOnStepper.push(stepperShiftSteps);
 
     var shiftNotesButton = new FlxButton(10, stepperShiftSteps.y + 20, "Shift Notes", function() {
+        var shiftAmount:Float = stepperShiftSteps.value * (15000 / Conductor.bpm);
+
         for (i in 0..._song.notes[curSec].sectionNotes.length) {
-            _song.notes[curSec].sectionNotes[i][0] += (stepperShiftSteps.value) * (15000 / Conductor.bpm);
+            _song.notes[curSec].sectionNotes[i][0] += shiftAmount;
         }
+
         updateGrid(false);
     });
 
@@ -1462,11 +1471,15 @@ function addNoteStackingUI():Void
     blockPressWhileTypingOnStepper.push(stepperDuplicateAmount);
 
     var dupeNotesButton = new FlxButton(10, stepperDuplicateAmount.y + 20, "Duplicate Notes", function() {
-        var copiedNotes:Array<Dynamic> = [];
-        for (i in 0..._song.notes[curSec].sectionNotes.length)
-            copiedNotes.push(_song.notes[curSec].sectionNotes[i]);
+        var copiedNotes:Array<Array<Dynamic>> = [];
+        var duplicateCount:Int = Std.int(stepperDuplicateAmount.value);
+        var shiftAmount:Float = stepperShiftSteps.value * (15000 / Conductor.bpm);
 
-        for (_i in 1...Std.int(stepperDuplicateAmount.value) + 1) {
+        for (i in 0..._song.notes[curSec].sectionNotes.length) {
+            copiedNotes.push(_song.notes[curSec].sectionNotes[i]);
+        }
+
+        for (_i in 1...duplicateCount + 1) {
             for (i in 0...copiedNotes.length) {
                 var copiedNote:Array<Dynamic> = [
                     copiedNotes[i][0],
@@ -1474,12 +1487,16 @@ function addNoteStackingUI():Void
                     copiedNotes[i][2],
                     copiedNotes[i][3]
                 ];
-                copiedNote[0] += (stepperShiftSteps.value * _i) * (15000 / Conductor.bpm);
+
+                copiedNote[0] += shiftAmount * _i;
                 _song.notes[curSec].sectionNotes.push(copiedNote);
             }
         }
-        if (_song.notes[curSec].sectionNotes.length <= 30000) updateGrid(false);
-        else changeSection(curSec + 1);
+
+        if (_song.notes[curSec].sectionNotes.length <= 30000)
+            updateGrid(false);
+        else
+            changeSection(curSec + 1);
     });
 
     // Add to UI
@@ -1490,6 +1507,7 @@ function addNoteStackingUI():Void
     tab_group_stacking.add(stepperShrinkAmount);
     tab_group_stacking.add(stepperShiftSteps);
     tab_group_stacking.add(stepperDuplicateAmount);
+
     tab_group_stacking.add(doubleSpamNum);
     tab_group_stacking.add(halfSpamNum);
     tab_group_stacking.add(doubleSpamMult);
