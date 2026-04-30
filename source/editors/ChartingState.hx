@@ -131,7 +131,7 @@ class ChartingState extends MusicBeatState
 	var nextRenderedSustains:FlxTypedGroup<FlxSprite>;
 	var nextRenderedNotes:FlxTypedGroup<Note>;
 
-	// Spamming features
+    // Note Stacking/Spamming UI
     var check_stackActive:FlxUICheckBox;
     var stepperStackNum:FlxUINumericStepper;
     var stepperStackOffset:FlxUINumericStepper;
@@ -1369,8 +1369,8 @@ function addNoteStackingUI():Void
     check_stackActive = new FlxUICheckBox(10, 10, null, null, "Enable EZ Spam Mode", 100);
     check_stackActive.name = 'check_stackActive';
 
-    // Stack amount - Removed 999999 from the parentheses
-    stepperStackNum = new FlxUINumericStepper(10, 30, 1, 1, 0);
+    // Stack amount
+    stepperStackNum = new FlxUINumericStepper(10, 30, 1, 1, 0); // X, Y, Step, Default, Min
     stepperStackNum.max = 999999;
     stepperStackNum.name = 'stack_count';
     blockPressWhileTypingOnStepper.push(stepperStackNum);
@@ -1387,7 +1387,7 @@ function addNoteStackingUI():Void
     halfSpamNum.color = FlxColor.RED;
     halfSpamNum.label.color = FlxColor.WHITE;
 
-    // Offset - Removed 999999 from the parentheses
+    // Offset
     stepperStackOffset = new FlxUINumericStepper(10, 80, 1, 1, 0);
     stepperStackOffset.max = 999999;
     stepperStackOffset.name = 'stack_offset';
@@ -1405,13 +1405,13 @@ function addNoteStackingUI():Void
     halfSpamMult.color = FlxColor.RED;
     halfSpamMult.label.color = FlxColor.WHITE;
 
-    // Side offset - Removed 9999 from the parentheses
+    // Side offset
     stepperStackSideOffset = new FlxUINumericStepper(10, 140, 1, 0, -9999);
     stepperStackSideOffset.max = 9999;
     stepperStackSideOffset.name = 'stack_sideways';
     blockPressWhileTypingOnStepper.push(stepperStackSideOffset);
 
-    // Shrink - Removed 8192 from the parentheses
+    // Shrink
     stepperShrinkAmount = new FlxUINumericStepper(10, stepperStackSideOffset.y + 30, 1, 1, 0);
     stepperShrinkAmount.max = 8192;
     stepperShrinkAmount.name = 'shrinker_amount';
@@ -1432,40 +1432,32 @@ function addNoteStackingUI():Void
     // Stretch notes
     var shrinkNotesButton = new FlxButton(10, doubleShrinker.y + 30, "Stretch Notes", function() {
         var minimumTime:Float = sectionStartTime();
-
-        for (i in 0..._song.notes[curSec].sectionNotes.length)
-        {
+        for (i in 0..._song.notes[curSec].sectionNotes.length) {
             var note:Array<Dynamic> = _song.notes[curSec].sectionNotes[i];
-
-            if (note[2] > 0)
-                note[2] *= stepperShrinkAmount.value;
-
+            if (note[2] > 0) note[2] *= stepperShrinkAmount.value;
             var originalStartTime:Float = note[0] - sectionStartTime();
             var stretchedStartTime:Float = originalStartTime * stepperShrinkAmount.value;
             var newStartTime:Float = sectionStartTime() + stretchedStartTime;
-
             note[0] = Math.max(newStartTime, minimumTime);
             _song.notes[curSec].sectionNotes[i] = note;
         }
-
         updateGrid(false);
     });
 
-    // Shift notes - Removed 8192 from the parentheses
+    // Shift notes
     stepperShiftSteps = new FlxUINumericStepper(10, shrinkNotesButton.y + 30, 1, 1, -8192);
     stepperShiftSteps.max = 8192;
     stepperShiftSteps.name = 'shifter_amount';
     blockPressWhileTypingOnStepper.push(stepperShiftSteps);
 
     var shiftNotesButton = new FlxButton(10, stepperShiftSteps.y + 20, "Shift Notes", function() {
-        for (i in 0..._song.notes[curSec].sectionNotes.length)
-        {
+        for (i in 0..._song.notes[curSec].sectionNotes.length) {
             _song.notes[curSec].sectionNotes[i][0] += (stepperShiftSteps.value) * (15000 / Conductor.bpm);
         }
         updateGrid(false);
     });
 
-    // Duplicate notes - Removed 32 from the parentheses
+    // Duplicate notes
     stepperDuplicateAmount = new FlxUINumericStepper(10, shiftNotesButton.y + 30, 1, 1, 0);
     stepperDuplicateAmount.max = 32;
     stepperDuplicateAmount.name = 'duplicater_amount';
@@ -1473,30 +1465,23 @@ function addNoteStackingUI():Void
 
     var dupeNotesButton = new FlxButton(10, stepperDuplicateAmount.y + 20, "Duplicate Notes", function() {
         var copiedNotes:Array<Dynamic> = [];
-
         for (i in 0..._song.notes[curSec].sectionNotes.length)
             copiedNotes.push(_song.notes[curSec].sectionNotes[i]);
 
-        for (_i in 1...Std.int(stepperDuplicateAmount.value) + 1)
-        {
-            for (i in 0...copiedNotes.length)
-            {
+        for (_i in 1...Std.int(stepperDuplicateAmount.value) + 1) {
+            for (i in 0...copiedNotes.length) {
                 var copiedNote:Array<Dynamic> = [
                     copiedNotes[i][0],
                     copiedNotes[i][1],
                     copiedNotes[i][2],
                     copiedNotes[i][3]
                 ];
-
                 copiedNote[0] += (stepperShiftSteps.value * _i) * (15000 / Conductor.bpm);
                 _song.notes[curSec].sectionNotes.push(copiedNote);
             }
         }
-
-        if (_song.notes[curSec].sectionNotes.length <= 30000)
-            updateGrid(false);
-        else
-            changeSection(curSec + 1);
+        if (_song.notes[curSec].sectionNotes.length <= 30000) updateGrid(false);
+        else changeSection(curSec + 1);
     });
 
     // Add to UI
@@ -1507,15 +1492,12 @@ function addNoteStackingUI():Void
     tab_group_stacking.add(stepperShrinkAmount);
     tab_group_stacking.add(stepperShiftSteps);
     tab_group_stacking.add(stepperDuplicateAmount);
-
     tab_group_stacking.add(doubleSpamNum);
     tab_group_stacking.add(halfSpamNum);
     tab_group_stacking.add(doubleSpamMult);
     tab_group_stacking.add(halfSpamMult);
-
     tab_group_stacking.add(doubleShrinker);
     tab_group_stacking.add(halfShrinker);
-
     tab_group_stacking.add(shrinkNotesButton);
     tab_group_stacking.add(shiftNotesButton);
     tab_group_stacking.add(dupeNotesButton);
