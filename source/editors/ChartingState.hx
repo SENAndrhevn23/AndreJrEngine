@@ -132,11 +132,14 @@ class ChartingState extends MusicBeatState
 	var nextRenderedNotes:FlxTypedGroup<Note>;
 
 	// Spamming features
-	var check_stackActive:FlxUICheckBox;
+    var check_stackActive:FlxUICheckBox;
     var stepperStackNum:FlxUINumericStepper;
     var stepperStackOffset:FlxUINumericStepper;
     var stepperStackSideOffset:FlxUINumericStepper;
     var stepperShrinkAmount:FlxUINumericStepper;
+    var stepperShiftSteps:FlxUINumericStepper;
+    var stepperDuplicateAmount:FlxUINumericStepper;
+
 
 	var gridBG:FlxSprite;
 	var nextGridBG:FlxSprite;
@@ -1445,7 +1448,8 @@ function addNoteStackingUI():Void
     });
 
     // Shift notes
-    stepperShiftSteps = new FlxUINumericStepper(10, shrinkNotesButton.y + 30, 1, 1, -8192, 8192);
+    stepperShiftSteps = new FlxUINumericStepper(10, shrinkNotesButton.y + 30, 1, 1, -8192);
+    stepperShiftSteps.max = 8192;
     stepperShiftSteps.name = 'shifter_amount';
     blockPressWhileTypingOnStepper.push(stepperShiftSteps);
 
@@ -1458,7 +1462,8 @@ function addNoteStackingUI():Void
     });
 
     // Duplicate notes
-    stepperDuplicateAmount = new FlxUINumericStepper(10, shiftNotesButton.y + 30, 1, 1, 0, 32);
+    stepperDuplicateAmount = new FlxUINumericStepper(10, shiftNotesButton.y + 30, 1, 1, 0);
+    stepperDuplicateAmount.max = 32;
     stepperDuplicateAmount.name = 'duplicater_amount';
     blockPressWhileTypingOnStepper.push(stepperDuplicateAmount);
 
