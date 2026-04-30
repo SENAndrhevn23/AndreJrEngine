@@ -1350,7 +1350,9 @@ class ChartingState extends MusicBeatState
 		UI_box.addGroup(tab_group_chart);
 	}
 
-	var tab_group_stacking = new FlxUI(null, UI_box);
+function addStackingTab():Void
+{
+    var tab_group_stacking = new FlxUI(null, UI_box);
     tab_group_stacking.name = 'Note Spamming';
 
     check_stackActive = new FlxUICheckBox(10, 10, null, null, "Enable EZ Spam Mode", 100);
@@ -1361,16 +1363,14 @@ class ChartingState extends MusicBeatState
     blockPressWhileTypingOnStepper.push(stepperStackNum);
 
     var doubleSpamNum:FlxButton = new FlxButton(stepperStackNum.x, stepperStackNum.y + 20, 'x2 Amount', function() {
-      stepperStackNum.value *= 2;
+        stepperStackNum.value *= 2;
     });
-    doubleSpamNum.setGraphicSize(Std.int(doubleSpamNum.width), Std.int(doubleSpamNum.height));
     doubleSpamNum.color = FlxColor.GREEN;
     doubleSpamNum.label.color = FlxColor.WHITE;
 
     var halfSpamNum:FlxButton = new FlxButton(doubleSpamNum.x + doubleSpamNum.width + 20, doubleSpamNum.y, 'x0.5 Amount', function() {
-      stepperStackNum.value /= 2;
+        stepperStackNum.value /= 2;
     });
-    halfSpamNum.setGraphicSize(Std.int(halfSpamNum.width), Std.int(halfSpamNum.height));
     halfSpamNum.color = FlxColor.RED;
     halfSpamNum.label.color = FlxColor.WHITE;
 
@@ -1379,15 +1379,14 @@ class ChartingState extends MusicBeatState
     blockPressWhileTypingOnStepper.push(stepperStackOffset);
 
     var doubleSpamMult:FlxButton = new FlxButton(stepperStackOffset.x, stepperStackOffset.y + 20, 'x2 SM', function() {
-      stepperStackOffset.value *= 2;
+        stepperStackOffset.value *= 2;
     });
     doubleSpamMult.color = FlxColor.GREEN;
     doubleSpamMult.label.color = FlxColor.WHITE;
 
     var halfSpamMult:FlxButton = new FlxButton(doubleSpamMult.x + doubleSpamMult.width + 20, doubleSpamMult.y, 'x0.5 SM', function() {
-      stepperStackOffset.value /= 2;
+        stepperStackOffset.value /= 2;
     });
-    halfSpamMult.setGraphicSize(Std.int(halfSpamMult.width), Std.int(halfSpamMult.height));
     halfSpamMult.color = FlxColor.RED;
     halfSpamMult.label.color = FlxColor.WHITE;
 
@@ -1400,37 +1399,35 @@ class ChartingState extends MusicBeatState
     blockPressWhileTypingOnStepper.push(stepperShrinkAmount);
 
     var doubleShrinker:FlxButton = new FlxButton(stepperShrinkAmount.x, stepperShrinkAmount.y + 20, 'x2 SH', function() {
-      stepperShrinkAmount.value *= 2;
+        stepperShrinkAmount.value *= 2;
     });
     doubleShrinker.color = FlxColor.GREEN;
     doubleShrinker.label.color = FlxColor.WHITE;
 
     var halfShrinker:FlxButton = new FlxButton(doubleShrinker.x + doubleShrinker.width + 20, doubleShrinker.y, 'x0.5 SH', function() {
-      stepperShrinkAmount.value /= 2;
+        stepperShrinkAmount.value /= 2;
     });
-    halfShrinker.setGraphicSize(Std.int(halfShrinker.width), Std.int(halfShrinker.height));
     halfShrinker.color = FlxColor.RED;
     halfShrinker.label.color = FlxColor.WHITE;
 
     var shrinkNotesButton:FlxButton = new FlxButton(10, doubleShrinker.y + 30, "Stretch Notes", function() {
-      var minimumTime:Float = sectionStartTime();
-      var sectionEndTime:Float = sectionStartTime(1);
-      for (i in 0..._song.notes[curSec].sectionNotes.length)
-      {
-        var note:Array<Dynamic> = _song.notes[curSec].sectionNotes[i];
-        if (note[2] > 0) note[2] *= stepperShrinkAmount.value;
-        var originalStartTime:Float = note[0]; // Original start time (in seconds)
-        originalStartTime = originalStartTime - sectionStartTime();
+        var minimumTime:Float = sectionStartTime();
 
-        var stretchedStartTime:Float = originalStartTime * stepperShrinkAmount.value;
+        for (i in 0..._song.notes[curSec].sectionNotes.length)
+        {
+            var note:Array<Dynamic> = _song.notes[curSec].sectionNotes[i];
 
-        var newStartTime:Float = sectionStartTime() + stretchedStartTime;
+            if (note[2] > 0) note[2] *= stepperShrinkAmount.value;
 
-        note[0] = Math.max(newStartTime, minimumTime);
-        if (note[0] < minimumTime) note[0] = minimumTime;
-        _song.notes[curSec].sectionNotes[i] = note;
-      }
-      updateGrid(false);
+            var originalStartTime:Float = note[0] - sectionStartTime();
+            var stretchedStartTime:Float = originalStartTime * stepperShrinkAmount.value;
+            var newStartTime:Float = sectionStartTime() + stretchedStartTime;
+
+            note[0] = Math.max(newStartTime, minimumTime);
+            _song.notes[curSec].sectionNotes[i] = note;
+        }
+
+        updateGrid(false);
     });
 
     var stepperShiftSteps:FlxUINumericStepper = new FlxUINumericStepper(10, shrinkNotesButton.y + 30, 1, 1, -8192, 8192, 4);
@@ -1438,42 +1435,48 @@ class ChartingState extends MusicBeatState
     blockPressWhileTypingOnStepper.push(stepperShiftSteps);
 
     var shiftNotesButton:FlxButton = new FlxButton(10, stepperShiftSteps.y + 20, "Shift Notes", function() {
-      for (i in 0..._song.notes[curSec].sectionNotes.length)
-      {
-        _song.notes[curSec].sectionNotes[i][0] += (stepperShiftSteps.value) * (15000 / Conductor.bpm);
-      }
-      updateGrid(false);
+        for (i in 0..._song.notes[curSec].sectionNotes.length)
+        {
+            _song.notes[curSec].sectionNotes[i][0] += (stepperShiftSteps.value) * (15000 / Conductor.bpm);
+        }
+        updateGrid(false);
     });
-    shiftNotesButton.setGraphicSize(Std.int(shiftNotesButton.width), Std.int(shiftNotesButton.height));
-
-    // ok im adding way too many spamcharting features LOL
 
     var stepperDuplicateAmount:FlxUINumericStepper = new FlxUINumericStepper(10, shiftNotesButton.y + 30, 1, 1, 0, 32, 4);
     stepperDuplicateAmount.name = 'duplicater_amount';
     blockPressWhileTypingOnStepper.push(stepperDuplicateAmount);
 
     var dupeNotesButton:FlxButton = new FlxButton(10, stepperDuplicateAmount.y + 20, "Duplicate Notes", function() {
-      var copiedNotes:Array<Dynamic> = [];
-      for (i in 0..._song.notes[curSec].sectionNotes.length)
-      {
-        var note:Array<Dynamic> = _song.notes[curSec].sectionNotes[i];
-        copiedNotes.push(note);
-      }
-      for (_i in 1...Std.int(stepperDuplicateAmount.value) + 1)
-      {
-        for (i in 0...copiedNotes.length)
-        {
-          final copiedNote:Array<Dynamic> = [copiedNotes[i][0], copiedNotes[i][1], copiedNotes[i][2], copiedNotes[i][3]];
-          copiedNote[0] += (stepperShiftSteps.value * _i) * (15000 / Conductor.bpm);
-          // yeah.. unfortunately this relies on the value of the Shift Notes stepper.. stupid but it works, so im gonna keep it this way until i find a better solution
-          _song.notes[curSec].sectionNotes.push(copiedNote);
-        }
-      }
-      _song.notes[curSec].sectionNotes.length <= 30000 ? updateGrid(false) : changeSection(curSec +
-        1); // if there's now more than 30,000 notes in the same section then uh.. change to the next section so you don't suffer a crash
-    });
-    dupeNotesButton.setGraphicSize(Std.int(dupeNotesButton.width), Std.int(dupeNotesButton.height));
+        var copiedNotes:Array<Dynamic> = [];
 
+        for (i in 0..._song.notes[curSec].sectionNotes.length)
+        {
+            copiedNotes.push(_song.notes[curSec].sectionNotes[i]);
+        }
+
+        for (_i in 1...Std.int(stepperDuplicateAmount.value) + 1)
+        {
+            for (i in 0...copiedNotes.length)
+            {
+                var copiedNote:Array<Dynamic> = [
+                    copiedNotes[i][0],
+                    copiedNotes[i][1],
+                    copiedNotes[i][2],
+                    copiedNotes[i][3]
+                ];
+
+                copiedNote[0] += (stepperShiftSteps.value * _i) * (15000 / Conductor.bpm);
+                _song.notes[curSec].sectionNotes.push(copiedNote);
+            }
+        }
+
+        if (_song.notes[curSec].sectionNotes.length <= 30000)
+            updateGrid(false);
+        else
+            changeSection(curSec + 1);
+    });
+
+    // Add UI
     tab_group_stacking.add(check_stackActive);
     tab_group_stacking.add(stepperStackNum);
     tab_group_stacking.add(stepperStackOffset);
@@ -1499,8 +1502,7 @@ class ChartingState extends MusicBeatState
     tab_group_stacking.add(new FlxText(100, stepperDuplicateAmount.y, 0, "Amount of Duplicates"));
 
     UI_box.addGroup(tab_group_stacking);
-  }
-
+}
 
 	function loadSong():Void
 	{
