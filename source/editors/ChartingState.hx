@@ -329,6 +329,7 @@ class ChartingState extends MusicBeatState
 			{name: "Note", label: 'Note'},
 			{name: "Events", label: 'Events'},
 			{name: "Charting", label: 'Charting'},
+			{name: "Note Spamming", label: 'Note Spamming'},
 		];
 
 		UI_box = new FlxUITabMenu(null, tabs, true);
