@@ -1369,8 +1369,9 @@ function addNoteStackingUI():Void
     check_stackActive = new FlxUICheckBox(10, 10, null, null, "Enable EZ Spam Mode", 100);
     check_stackActive.name = 'check_stackActive';
 
-    // Stack amount
-    stepperStackNum = new FlxUINumericStepper(10, 30, 1, 1, 0, 999999);
+    // Stack amount - Removed 999999 from the parentheses
+    stepperStackNum = new FlxUINumericStepper(10, 30, 1, 1, 0);
+    stepperStackNum.max = 999999;
     stepperStackNum.name = 'stack_count';
     blockPressWhileTypingOnStepper.push(stepperStackNum);
 
@@ -1386,8 +1387,9 @@ function addNoteStackingUI():Void
     halfSpamNum.color = FlxColor.RED;
     halfSpamNum.label.color = FlxColor.WHITE;
 
-    // Offset
-    stepperStackOffset = new FlxUINumericStepper(10, 80, 1, 1, 0, 999999);
+    // Offset - Removed 999999 from the parentheses
+    stepperStackOffset = new FlxUINumericStepper(10, 80, 1, 1, 0);
+    stepperStackOffset.max = 999999;
     stepperStackOffset.name = 'stack_offset';
     blockPressWhileTypingOnStepper.push(stepperStackOffset);
 
@@ -1403,13 +1405,15 @@ function addNoteStackingUI():Void
     halfSpamMult.color = FlxColor.RED;
     halfSpamMult.label.color = FlxColor.WHITE;
 
-    // Side offset
-    stepperStackSideOffset = new FlxUINumericStepper(10, 140, 1, 0, -9999, 9999);
+    // Side offset - Removed 9999 from the parentheses
+    stepperStackSideOffset = new FlxUINumericStepper(10, 140, 1, 0, -9999);
+    stepperStackSideOffset.max = 9999;
     stepperStackSideOffset.name = 'stack_sideways';
     blockPressWhileTypingOnStepper.push(stepperStackSideOffset);
 
-    // Shrink
-    stepperShrinkAmount = new FlxUINumericStepper(10, stepperStackSideOffset.y + 30, 1, 1, 0, 8192);
+    // Shrink - Removed 8192 from the parentheses
+    stepperShrinkAmount = new FlxUINumericStepper(10, stepperStackSideOffset.y + 30, 1, 1, 0);
+    stepperShrinkAmount.max = 8192;
     stepperShrinkAmount.name = 'shrinker_amount';
     blockPressWhileTypingOnStepper.push(stepperShrinkAmount);
 
@@ -1447,7 +1451,7 @@ function addNoteStackingUI():Void
         updateGrid(false);
     });
 
-    // Shift notes
+    // Shift notes - Removed 8192 from the parentheses
     stepperShiftSteps = new FlxUINumericStepper(10, shrinkNotesButton.y + 30, 1, 1, -8192);
     stepperShiftSteps.max = 8192;
     stepperShiftSteps.name = 'shifter_amount';
@@ -1461,7 +1465,7 @@ function addNoteStackingUI():Void
         updateGrid(false);
     });
 
-    // Duplicate notes
+    // Duplicate notes - Removed 32 from the parentheses
     stepperDuplicateAmount = new FlxUINumericStepper(10, shiftNotesButton.y + 30, 1, 1, 0);
     stepperDuplicateAmount.max = 32;
     stepperDuplicateAmount.name = 'duplicater_amount';
