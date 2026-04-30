@@ -1362,62 +1362,68 @@ function addNoteStackingUI():Void
     var tab_group_stacking = new FlxUI(null, UI_box);
     tab_group_stacking.name = 'Note Spamming';
 
+    // Checkbox
     check_stackActive = new FlxUICheckBox(10, 10, null, null, "Enable EZ Spam Mode", 100);
     check_stackActive.name = 'check_stackActive';
 
+    // Stack amount
     stepperStackNum = new FlxUINumericStepper(10, 30, 1, 1, 0, 999999);
     stepperStackNum.name = 'stack_count';
     blockPressWhileTypingOnStepper.push(stepperStackNum);
 
-    var doubleSpamNum:FlxButton = new FlxButton(stepperStackNum.x, stepperStackNum.y + 20, 'x2 Amount', function() {
+    var doubleSpamNum = new FlxButton(stepperStackNum.x, stepperStackNum.y + 20, 'x2 Amount', function() {
         stepperStackNum.value *= 2;
     });
     doubleSpamNum.color = FlxColor.GREEN;
     doubleSpamNum.label.color = FlxColor.WHITE;
 
-    var halfSpamNum:FlxButton = new FlxButton(doubleSpamNum.x + doubleSpamNum.width + 20, doubleSpamNum.y, 'x0.5 Amount', function() {
+    var halfSpamNum = new FlxButton(doubleSpamNum.x + doubleSpamNum.width + 20, doubleSpamNum.y, 'x0.5 Amount', function() {
         stepperStackNum.value /= 2;
     });
     halfSpamNum.color = FlxColor.RED;
     halfSpamNum.label.color = FlxColor.WHITE;
 
+    // Offset
     stepperStackOffset = new FlxUINumericStepper(10, 80, 1, 1, 0, 999999);
     stepperStackOffset.name = 'stack_offset';
     blockPressWhileTypingOnStepper.push(stepperStackOffset);
 
-    var doubleSpamMult:FlxButton = new FlxButton(stepperStackOffset.x, stepperStackOffset.y + 20, 'x2 SM', function() {
+    var doubleSpamMult = new FlxButton(stepperStackOffset.x, stepperStackOffset.y + 20, 'x2 SM', function() {
         stepperStackOffset.value *= 2;
     });
     doubleSpamMult.color = FlxColor.GREEN;
     doubleSpamMult.label.color = FlxColor.WHITE;
 
-    var halfSpamMult:FlxButton = new FlxButton(doubleSpamMult.x + doubleSpamMult.width + 20, doubleSpamMult.y, 'x0.5 SM', function() {
+    var halfSpamMult = new FlxButton(doubleSpamMult.x + doubleSpamMult.width + 20, doubleSpamMult.y, 'x0.5 SM', function() {
         stepperStackOffset.value /= 2;
     });
     halfSpamMult.color = FlxColor.RED;
     halfSpamMult.label.color = FlxColor.WHITE;
 
+    // Side offset
     stepperStackSideOffset = new FlxUINumericStepper(10, 140, 1, 0, -9999, 9999);
     stepperStackSideOffset.name = 'stack_sideways';
     blockPressWhileTypingOnStepper.push(stepperStackSideOffset);
 
+    // Shrink
     stepperShrinkAmount = new FlxUINumericStepper(10, stepperStackSideOffset.y + 30, 1, 1, 0, 8192);
     stepperShrinkAmount.name = 'shrinker_amount';
     blockPressWhileTypingOnStepper.push(stepperShrinkAmount);
 
-    var doubleShrinker:FlxButton = new FlxButton(stepperShrinkAmount.x, stepperShrinkAmount.y + 20, 'x2 SH', function() {
+    var doubleShrinker = new FlxButton(stepperShrinkAmount.x, stepperShrinkAmount.y + 20, 'x2 SH', function() {
         stepperShrinkAmount.value *= 2;
     });
     doubleShrinker.color = FlxColor.GREEN;
     doubleShrinker.label.color = FlxColor.WHITE;
 
-    var halfShrinker:FlxButton = new FlxButton(doubleShrinker.x + doubleShrinker.width + 20, doubleShrinker.y, 'x0.5 SH', function() {
+    var halfShrinker = new FlxButton(doubleShrinker.x + doubleShrinker.width + 20, doubleShrinker.y, 'x0.5 SH', function() {
         stepperShrinkAmount.value /= 2;
     });
     halfShrinker.color = FlxColor.RED;
     halfShrinker.label.color = FlxColor.WHITE;
 
-    var shrinkNotesButton:FlxButton = new FlxButton(10, doubleShrinker.y + 30, "Stretch Notes", function() {
+    // Stretch notes
+    var shrinkNotesButton = new FlxButton(10, doubleShrinker.y + 30, "Stretch Notes", function() {
         var minimumTime:Float = sectionStartTime();
 
         for (i in 0..._song.notes[curSec].sectionNotes.length)
@@ -1438,11 +1444,12 @@ function addNoteStackingUI():Void
         updateGrid(false);
     });
 
-    var stepperShiftSteps:FlxUINumericStepper = new FlxUINumericStepper(10, shrinkNotesButton.y + 30, 1, 1, -8192, 8192);
+    // Shift notes
+    stepperShiftSteps = new FlxUINumericStepper(10, shrinkNotesButton.y + 30, 1, 1, -8192, 8192);
     stepperShiftSteps.name = 'shifter_amount';
     blockPressWhileTypingOnStepper.push(stepperShiftSteps);
 
-    var shiftNotesButton:FlxButton = new FlxButton(10, stepperShiftSteps.y + 20, "Shift Notes", function() {
+    var shiftNotesButton = new FlxButton(10, stepperShiftSteps.y + 20, "Shift Notes", function() {
         for (i in 0..._song.notes[curSec].sectionNotes.length)
         {
             _song.notes[curSec].sectionNotes[i][0] += (stepperShiftSteps.value) * (15000 / Conductor.bpm);
@@ -1450,11 +1457,12 @@ function addNoteStackingUI():Void
         updateGrid(false);
     });
 
-    var stepperDuplicateAmount:FlxUINumericStepper = new FlxUINumericStepper(10, shiftNotesButton.y + 30, 1, 1, 0, 32);
+    // Duplicate notes
+    stepperDuplicateAmount = new FlxUINumericStepper(10, shiftNotesButton.y + 30, 1, 1, 0, 32);
     stepperDuplicateAmount.name = 'duplicater_amount';
     blockPressWhileTypingOnStepper.push(stepperDuplicateAmount);
 
-    var dupeNotesButton:FlxButton = new FlxButton(10, stepperDuplicateAmount.y + 20, "Duplicate Notes", function() {
+    var dupeNotesButton = new FlxButton(10, stepperDuplicateAmount.y + 20, "Duplicate Notes", function() {
         var copiedNotes:Array<Dynamic> = [];
 
         for (i in 0..._song.notes[curSec].sectionNotes.length)
@@ -1482,7 +1490,7 @@ function addNoteStackingUI():Void
             changeSection(curSec + 1);
     });
 
-    // Add UI
+    // Add to UI
     tab_group_stacking.add(check_stackActive);
     tab_group_stacking.add(stepperStackNum);
     tab_group_stacking.add(stepperStackOffset);
@@ -1495,6 +1503,7 @@ function addNoteStackingUI():Void
     tab_group_stacking.add(halfSpamNum);
     tab_group_stacking.add(doubleSpamMult);
     tab_group_stacking.add(halfSpamMult);
+
     tab_group_stacking.add(doubleShrinker);
     tab_group_stacking.add(halfShrinker);
 
