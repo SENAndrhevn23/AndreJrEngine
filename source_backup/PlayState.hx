@@ -184,9 +184,9 @@ class PlayState extends MusicBeatState
 
     // Optimization settings
 	public var reducedGC:Bool = false;
-	public var showRating:Bool = false;
-	public var showComboNum:Bool = false;
-	public var showCombo:Bool = false;
+	public var disableComboRating:Bool = false;
+	public var disableComboNumber:Bool = false;
+	public var disableComboPopup:Bool = false;
 
 	// Gameplay settings
 	public var healthGain:Float = 1;
