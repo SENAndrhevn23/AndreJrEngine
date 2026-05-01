@@ -80,7 +80,7 @@ class OptimizationsSettingsSubState extends BaseOptionsMenu
 		#if cpp
 		if (ClientPrefs.data.reducedGC)
 		{
-			var mb = ClientPrefs.data.;
+			var mb = ClientPrefs.data.gcMemoryLimit;
 			if (mb < 64) mb = 64;
 
 			Gc.setMinimumFreeSpace(mb * 1024 * 1024);
