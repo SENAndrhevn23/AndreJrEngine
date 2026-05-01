@@ -182,6 +182,12 @@ class PlayState extends MusicBeatState
 	public static var changedDifficulty:Bool = false;
 	public static var chartingMode:Bool = false;
 
+    // Optimization settings
+	public var reducedGC:Bool = false;
+	public var disableComboRating:Bool = false;
+	public var disableComboNumber:Bool = false;
+	public var disableComboPopup:Bool = false;
+
 	// Gameplay settings
 	public var healthGain:Float = 1;
 	public var healthLoss:Float = 1;
@@ -4286,8 +4292,8 @@ class PlayState extends MusicBeatState
 	public var totalPlayed:Int = 0;
 	public var totalNotesHit:Float = 0.0;
 	public var showCombo:Bool = false;
-	public var showComboNum:Bool = true;
-	public var showRating:Bool = true;
+	public var showComboNum:Bool = false;
+	public var showRating:Bool = false;
 
 	private function cachePopUpScore()
 	{
@@ -5098,7 +5104,7 @@ class PlayState extends MusicBeatState
 
 	function killHenchmen():Void
 	{
-		if (!ClientPrefs.data.lowQuality && ClientPrefs.data.violence && curStage == 'limo')
+		if (!ClientPrefs.data.lowQuality && curStage == 'limo')
 		{
 			if (limoKillingState < 1)
 			{
