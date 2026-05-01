@@ -47,9 +47,6 @@ class SaveVariables {
 	public var framerate:Int = 60;
 
 	// ---------------- COMBO POPUPS (NEW SYSTEM) ----------------
-	public var showCombo:Bool = true;
-	public var showComboNum:Bool = true;
-	public var showRating:Bool = true;
 
 	// ---------------- OPTIMIZATION ----------------
 	public var reducedGC:Bool = false;

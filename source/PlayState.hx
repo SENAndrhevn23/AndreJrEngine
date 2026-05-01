@@ -184,9 +184,6 @@ class PlayState extends MusicBeatState
 
     // Optimization settings
 	public var reducedGC:Bool = false;
-	public var showRating:Bool = false;
-	public var showComboNum:Bool = false;
-	public var showCombo:Bool = false;
 
 	// Gameplay settings
 	public var healthGain:Float = 1;
@@ -4291,9 +4288,6 @@ class PlayState extends MusicBeatState
 
 	public var totalPlayed:Int = 0;
 	public var totalNotesHit:Float = 0.0;
-	public var showCombo:Bool = false;
-	public var showComboNum:Bool = false;
-	public var showRating:Bool = false;
 
 	private function cachePopUpScore()
 	{
@@ -4382,7 +4376,6 @@ class PlayState extends MusicBeatState
 		rating.acceleration.y = 550 * playbackRate * playbackRate;
 		rating.velocity.y -= FlxG.random.int(140, 175) * playbackRate;
 		rating.velocity.x -= FlxG.random.int(0, 10) * playbackRate;
-		rating.visible = (!ClientPrefs.data.hideHud && showRating);
 		rating.x += ClientPrefs.data.comboOffset[0];
 		rating.y -= ClientPrefs.data.comboOffset[1];
 
@@ -4392,7 +4385,6 @@ class PlayState extends MusicBeatState
 		comboSpr.x = coolText.x;
 		comboSpr.acceleration.y = FlxG.random.int(200, 300) * playbackRate * playbackRate;
 		comboSpr.velocity.y -= FlxG.random.int(140, 160) * playbackRate;
-		comboSpr.visible = (!ClientPrefs.data.hideHud && showCombo);
 		comboSpr.x += ClientPrefs.data.comboOffset[0];
 		comboSpr.y -= ClientPrefs.data.comboOffset[1];
 		comboSpr.y += 60;
@@ -4427,7 +4419,6 @@ class PlayState extends MusicBeatState
 
 		var daLoop:Int = 0;
 		var xThing:Float = 0;
-		if (showCombo)
 			comboGroup.add(comboSpr);
 
 		for (i in seperatedScore)
@@ -4458,7 +4449,6 @@ class PlayState extends MusicBeatState
 			numScore.visible = !ClientPrefs.data.hideHud;
 
 			// if (combo >= 10 || combo == 0)
-			if (showComboNum)
 				comboGroup.add(numScore);
 
 			FlxTween.tween(numScore, {alpha: 0}, 0.2 / playbackRate, {
