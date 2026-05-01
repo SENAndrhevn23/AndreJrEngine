@@ -61,7 +61,7 @@ class OptimizationsSettingsSubState extends BaseOptionsMenu
 		var option:Option = new Option(
 			'GC Memory Limit',
 			'Controls GC memory pressure in MB.\nLower = more cleanup, higher = smoother gameplay.',
-			'gcMemoryLimit',
+			'',
 			'int'
 		);
 		option.minValue = 64;
@@ -80,7 +80,7 @@ class OptimizationsSettingsSubState extends BaseOptionsMenu
 		#if cpp
 		if (ClientPrefs.data.reducedGC)
 		{
-			var mb = ClientPrefs.data.gcMemoryLimit;
+			var mb = ClientPrefs.data.;
 			if (mb < 64) mb = 64;
 
 			Gc.setMinimumFreeSpace(mb * 1024 * 1024);
